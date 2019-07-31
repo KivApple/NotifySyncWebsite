@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>NotifySync</title>
+</head>
+<body>
+    <h1>NotifySync</h1>
+    <ul>
+        <li><a href="#" id="windows-link">Download for Windows</a></li>
+        <li><a href="#" id="android-link">Download for Android</a></li>
+    </ul>
+    <script>
+        function httpGetAsync(theUrl, callback) {
+            const xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
+                    callback(xmlHttp.responseText);
+            };
+            xmlHttp.open("GET", theUrl, true);
+            xmlHttp.setRequestHeader('Accept', 'application/vnd.github.inertia-preview+json');
+            xmlHttp.send();
+        }
+
+        httpGetAsync('https://api.github.com/repos/KivApple/NotifySyncWPF/releases/latest', function (response) {
+            const downloadLink = JSON.parse(response)['assets'][0]['browser_download_url'];
+            document.getElementById('windows-link').href = downloadLink;
+        });
+
+        httpGetAsync('https://api.github.com/repos/KivApple/NotifySyncAndroid/releases/latest', function (response) {
+            const downloadLink = JSON.parse(response)['assets'][0]['browser_download_url'];
+            document.getElementById('android-link').href = downloadLink;
+        });
+    </script>
+</body>
+</html>
